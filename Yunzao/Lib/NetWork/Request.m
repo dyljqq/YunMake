@@ -27,16 +27,6 @@
     if(self){        
         self.service=service;
         self.isJson=YES;
-        [self dic];
-        UIDevice* device = [UIDevice currentDevice];
-        [self setParam:[device identifierForVendor].UUIDString setKey:@"deviceUUID"];
-        [self setParam:[device model] setKey:@"deviceTypeName"];
-        [self setParam:[device systemName] setKey:@"os"];
-        [self setParam:[device systemVersion] setKey:@"osVer"];
-        [self setParam:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] setKey:@"appVer"];
-        if([BaseMethod isStringNotNull:[DataBase nowUser].authToken]){
-            [self setParam:[DataBase nowUser].authToken setKey:@"authToken"];
-        }
     }
     return self;
 }
@@ -44,6 +34,7 @@
 -(NSMutableDictionary*)dic{
     if(!_dic){
         _dic = [NSMutableDictionary dictionary];
+        [_dic setValue:TOKEN forKey:@"token"];
     }
     return _dic;
 }
@@ -54,7 +45,7 @@
     if([value isEqual:[NSNull null]] || ![BaseMethod isStringNotNull:key]){
         return ;
     }
-    [_dic setValue:value forKey:key];
+    [self.dic setValue:value forKey:key];
 }
 
 //网络请求成功
@@ -73,37 +64,26 @@
 
 -(void)callBack:(void (^)(Response *response))callBack{
     if(![BaseMethod isConnectionAvailable]){
-        [ApplicationDelegate popController];
         [SVProgressHUD showInfoWithStatus:@"当前网络不可用"];
         return ;
     }
     [SVProgressHUD show];
-    if([_service isEqual:[NSNull null]]){
-        
+    if([_service isEqual:[NSNull null]]){        
         NSLog(@"Request Service is null");
         return ;
     }
     NSLog(@"url:%@,method:%@",_service.url,_service.method);
-    NSLog(@"%@",_dic);
+    NSLog(@"%@",self.dic);
     AFHTTPRequestOperationManager* manager=[AFHTTPRequestOperationManager manager];
     //如果需要传递json，那么就将类型变为json
     if(_isJson){
-        manager.requestSerializer=[AFJSONRequestSerializer serializer];
         manager.responseSerializer=[AFJSONResponseSerializer serializer];
     }
     
     if([_service.method isEqualToString:@"POST"]){
-        [manager POST:_service.url parameters:_dic success:^ void(AFHTTPRequestOperation * operation, NSDictionary* dic) {
+        [manager POST:_service.url parameters:self.dic success:^ void(AFHTTPRequestOperation * operation, NSDictionary* dic) {
             [SVProgressHUD dismiss];
             NSLog(@"response data:%@",dic);
-            int code = [dic[@"Code"] intValue];
-            if (code == TOKEN_ERROR) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [SVProgressHUD showErrorWithStatus:@"请重新登录"];
-                    [ApplicationDelegate logout];
-                });
-                return ;
-            }
             [self successOperate:dic setCallBack:callBack];
             
         } failure:^ void(AFHTTPRequestOperation * operation, NSError * error) {
@@ -116,7 +96,7 @@
         }];
     }else if([_service.method isEqualToString:@"GET"]){
         
-        [manager POST:_service.url parameters:_dic success:^ void(AFHTTPRequestOperation * operation, NSDictionary* dic) {
+        [manager POST:_service.url parameters:self.dic success:^ void(AFHTTPRequestOperation * operation, NSDictionary* dic) {
             
             [self successOperate:dic setCallBack:callBack];
             
@@ -133,14 +113,14 @@
 
 -(void)uploadCallBack:(void (^)(Response *response))callBack setImage:(UIImage*)image{
     
-    NSLog(@"url:%@,method:%@ dic:%@",_service.url,_service.method,_dic);
+    NSLog(@"url:%@,method:%@ dic:%@",_service.url,_service.method,self.dic);
     
     NSData* data=[NSData dataWithData:UIImagePNGRepresentation(image)];
     long time=[[NSDate date] timeIntervalSince1970];
     NSString* imageName=[NSString stringWithFormat:@"%ld.png",time];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:_service.url parameters:_dic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [manager POST:_service.url parameters:self.dic constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:data
                                     name:@"image"
                                 fileName:imageName

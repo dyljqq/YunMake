@@ -12,16 +12,16 @@
 
 @interface ApiConfig : NSObject
 
-+ (NSURL*)ITEM_LIST_URL;
++ (Service*)ITEM_LIST_URL;
 
-+ (NSURL*)ITEM_CREATE_URL;
++ (Service*)ITEM_CREATE_URL;
 
-+ (NSURL*)ITEM_UPDATE_URL;
++ (Service*)ITEM_UPDATE_URL;
 
-+ (NSURL*)ITEM_DELETE_URL;
++ (Service*)ITEM_DELETE_URL;
 
-+ (NSURL*)ITEM_FINISH_URL;
++ (Service*)ITEM_FINISH_URL;
 
-+ (NSURL*)ITEM_REVERT_URL;
++ (Service*)ITEM_REVERT_URL;
 
 @end

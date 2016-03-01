@@ -22,7 +22,7 @@
 @implementation ItemRequest
 
 + (void)getItemListRequest:(ItemRequestSuccess)callback{
-    Request* request = [[Request alloc] initWithServlet:[[Service alloc] initWithServlet:[ApiConfig ITEM_LIST_URL] setMethod:@"POST"]];
+    Request* request = [[Request alloc] initWithServlet:[ApiConfig ITEM_LIST_URL]];
     [request callBack:^(Response* response){
         if(response.code == SUCCESS_CODE){
             NSArray* items = response.data[@"data"];
@@ -49,14 +49,16 @@
     }];
 }
 
-+ (void)createItemRequest:(NSString *)title withContent:(NSString *)content callback:(ItemRequestSuccess)callback{
-    Request* request = [[Request alloc] initWithServlet:[[Service alloc] initWithServlet:[ApiConfig ITEM_CREATE_URL] setMethod:@"POST"]];
++ (void)createItemRequest:(NSString *)title withContent:(NSString *)content callback:(ItemRequestComplete)callback{
+    Request* request = [[Request alloc] initWithServlet:[ApiConfig ITEM_CREATE_URL]];
     [request setParam:title setKey:@"title"];
     [request setParam:content setKey:@"content"];
     [request callBack:^(Response* response){
         NSString* message = nil;
         if(response.code == SUCCESS_CODE){
             message = @"添加事项成功";
+            if(callback)
+                callback();
         }else{
             message = response.message;
         }
@@ -66,14 +68,16 @@
     }];
 }
 
-+ (void)updateItemRequest:(NSUInteger)uid withTitle:(NSString *)title withContent:(NSString *)content callback:(ItemRequestSuccess)callback{
-    Request* request = [[Request alloc] initWithServlet:[[Service alloc] initWithServlet:[ApiConfig ITEM_CREATE_URL] setMethod:@"POST"]];
++ (void)updateItemRequest:(NSUInteger)uid withTitle:(NSString *)title withContent:(NSString *)content callback:(ItemRequestComplete)callback{
+    Request* request = [[Request alloc] initWithServlet:[ApiConfig ITEM_CREATE_URL]];
     [request setParam:title setKey:@"title"];
     [request setParam:content setKey:@"content"];
     [request callBack:^(Response* response){
         NSString* message = nil;
         if(response.code == SUCCESS_CODE){
             message = @"更新事项成功";
+            if(callback)
+                callback();
         }else{
             message = response.message;
         }
@@ -84,21 +88,21 @@
 }
 
 + (void)deleteItenRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback{
-    [self commenMethod:itemId withUrl:[ApiConfig ITEM_UPDATE_URL] withSuccessMessage:@"删除事项成功"];
+    [self commenMethod:itemId withService:[ApiConfig ITEM_UPDATE_URL] withSuccessMessage:@"删除事项成功"];
 }
 
 + (void)finishItemRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback{
-    [self commenMethod:itemId withUrl:[ApiConfig ITEM_UPDATE_URL] withSuccessMessage:@"完成事项成功"];
+    [self commenMethod:itemId withService:[ApiConfig ITEM_UPDATE_URL] withSuccessMessage:@"完成事项成功"];
 }
 
 + (void)revertItemRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback{
-    [self commenMethod:itemId withUrl:[ApiConfig ITEM_REVERT_URL] withSuccessMessage:@"撤销完成事项成功"];
+    [self commenMethod:itemId withService:[ApiConfig ITEM_REVERT_URL] withSuccessMessage:@"撤销完成事项成功"];
 }
 
 #pragma Private Method
 
-+ (void)commenMethod:(NSUInteger)itemId withUrl:(NSURL*)url withSuccessMessage:(NSString*)msg{
-    Request* request = [[Request alloc] initWithServlet:[[Service alloc] initWithServlet:[ApiConfig ITEM_UPDATE_URL] setMethod:@"POST"]];
++ (void)commenMethod:(NSUInteger)itemId withService:(Service*)service withSuccessMessage:(NSString*)msg{
+    Request* request = [[Request alloc] initWithServlet:service];
     [request setParam:[NSNumber numberWithUnsignedLong:itemId] setKey:@"id"];
     [request callBack:^(Response* response){
         NSString* message = nil;

@@ -18,9 +18,9 @@ typedef void (^ItemRequestSuccess)(NSArray* array);
 
 + (void)getItemListRequest:(ItemRequestSuccess)callback;
 
-+ (void)createItemRequest:(NSString*)title withContent:(NSString*)content callback:(ItemRequestSuccess)callback;
++ (void)createItemRequest:(NSString*)title withContent:(NSString*)content callback:(ItemRequestComplete)callback;
 
-+ (void)updateItemRequest:(NSUInteger)itemId withTitle:(NSString*)title withContent:(NSString*)content callback:(ItemRequestSuccess)callback;
++ (void)updateItemRequest:(NSUInteger)itemId withTitle:(NSString*)title withContent:(NSString*)content callback:(ItemRequestComplete)callback;
 
 + (void)deleteItenRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback;
 

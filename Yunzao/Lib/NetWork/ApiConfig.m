@@ -28,28 +28,28 @@ static const NSString* ITEM_REVERT_URL = @"/item/revert";
 
 @implementation ApiConfig
 
-+ (NSURL*)ITEM_LIST_URL{
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_LIST_URL]];
++ (Service*)ITEM_LIST_URL{
+    return [[Service alloc] initWithServlet:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_LIST_URL] setMethod:@"POST"];
 }
 
-+ (NSURL*)ITEM_CREATE_URL{
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_CREATE_URL]];
++ (Service*)ITEM_CREATE_URL{
+    return [[Service alloc] initWithServlet:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_CREATE_URL] setMethod:@"POST"];
 }
 
-+ (NSURL*)ITEM_UPDATE_URL{
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_UPDATE_URL]];
++ (Service*)ITEM_UPDATE_URL{
+    return [[Service alloc] initWithServlet:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_UPDATE_URL] setMethod:@"POST"];
 }
 
-+ (NSURL*)ITEM_DELETE_URL{
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_DELETE_URL]];
++ (Service*)ITEM_DELETE_URL{
+    return [[Service alloc] initWithServlet:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_DELETE_URL] setMethod:@"POST"];
 }
 
-+ (NSURL*)ITEM_FINISH_URL{
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_FINISH_URL]];
++ (Service*)ITEM_FINISH_URL{
+    return [[Service alloc] initWithServlet:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_FINISH_URL] setMethod:@"POST"];
 }
 
-+ (NSURL*)ITEM_REVERT_URL{
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_REVERT_URL]];
++ (Service*)ITEM_REVERT_URL{
+    return [[Service alloc] initWithServlet:[NSString stringWithFormat:@"%@%@", URL_PREFIX_HEADER, ITEM_REVERT_URL] setMethod:@"POST"];
 }
 
 @end

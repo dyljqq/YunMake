@@ -10,7 +10,7 @@
 
 @implementation Service
 
--(instancetype)initWithServlet:(NSURL *)url setMethod:(NSString *)method{
+-(instancetype)initWithServlet:(NSString *)url setMethod:(NSString *)method{
     
     self=[super init];
     if(self){        

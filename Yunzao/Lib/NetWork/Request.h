@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 季勤强. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "Service.h"
 #import "Response.h"
 

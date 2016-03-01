@@ -16,11 +16,27 @@
 #import "Response.h"
 #import "ApiConfig.h"
 #import "Service.h"
+#import "ItemRequest.h"
 #import <SVProgressHUD.h>
 
-#define URL_PREFIX_HEADER @"http://interview.yunzao.cn/api/100/"
+#define URL_PREFIX_HEADER @"http://interview.yunzao.cn/api/100"
 
 #define TOKEN @"6e10db1fd569746378482b4368094042"
+
+#define APPLICATION_SIZE [UIScreen mainScreen].bounds.size
+
+#pragma Color
+
+#define RGB(r, g, b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
+
+#define BACKGROUND_COLOR RGB(245, 245, 245)
+#define FONT_COLOR RGB(75, 75, 75)
+#define FONT_GRAY_COLOR RGB(155, 155, 155)
+#define BUTTON_COLOR RGB(234, 86, 104)
+
+#pragma FONT
+
+#define FONT(size) [UIFont systemFontOfSize:size]
 
 #pragma Code
 #define SUCCESS_CODE 0

@@ -18,6 +18,6 @@
 @property(nonatomic,copy)NSString* method;
 
 //初始化的方法
-- (instancetype)initWithServlet:(NSURL*)url setMethod:(NSString*)method;
+- (instancetype)initWithServlet:(NSString*)url setMethod:(NSString*)method;
 
 @end
