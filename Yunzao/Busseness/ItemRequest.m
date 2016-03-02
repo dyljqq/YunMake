@@ -68,10 +68,11 @@
     }];
 }
 
-+ (void)updateItemRequest:(NSUInteger)uid withTitle:(NSString *)title withContent:(NSString *)content callback:(ItemRequestComplete)callback{
-    Request* request = [[Request alloc] initWithServlet:[ApiConfig ITEM_CREATE_URL]];
++ (void)updateItemRequest:(NSUInteger)itemId withTitle:(NSString *)title withContent:(NSString *)content callback:(ItemRequestComplete)callback{
+    Request* request = [[Request alloc] initWithServlet:[ApiConfig ITEM_UPDATE_URL]];
     [request setParam:title setKey:@"title"];
     [request setParam:content setKey:@"content"];
+    [request setParam:[NSNumber numberWithUnsignedInteger:itemId] setKey:@"id"];
     [request callBack:^(Response* response){
         NSString* message = nil;
         if(response.code == SUCCESS_CODE){
@@ -87,27 +88,29 @@
     }];
 }
 
-+ (void)deleteItenRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback{
-    [self commenMethod:itemId withService:[ApiConfig ITEM_UPDATE_URL] withSuccessMessage:@"删除事项成功"];
++ (void)deleteItenRequest:(NSUInteger)itemId callback:(ItemRequestComplete)callback{
+    [self commenMethod:itemId withService:[ApiConfig ITEM_DELETE_URL] withSuccessMessage:@"删除事项成功" callback:callback];
 }
 
-+ (void)finishItemRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback{
-    [self commenMethod:itemId withService:[ApiConfig ITEM_UPDATE_URL] withSuccessMessage:@"完成事项成功"];
++ (void)finishItemRequest:(NSUInteger)itemId callback:(ItemRequestComplete)callback{
+    [self commenMethod:itemId withService:[ApiConfig ITEM_FINISH_URL] withSuccessMessage:@"完成事项成功" callback:callback];
 }
 
-+ (void)revertItemRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback{
-    [self commenMethod:itemId withService:[ApiConfig ITEM_REVERT_URL] withSuccessMessage:@"撤销完成事项成功"];
++ (void)revertItemRequest:(NSUInteger)itemId callback:(ItemRequestComplete)callback{
+    [self commenMethod:itemId withService:[ApiConfig ITEM_REVERT_URL] withSuccessMessage:@"撤销完成事项成功" callback:callback];
 }
 
 #pragma Private Method
 
-+ (void)commenMethod:(NSUInteger)itemId withService:(Service*)service withSuccessMessage:(NSString*)msg{
++ (void)commenMethod:(NSUInteger)itemId withService:(Service*)service withSuccessMessage:(NSString*)msg callback:(ItemRequestComplete)callback{
     Request* request = [[Request alloc] initWithServlet:service];
     [request setParam:[NSNumber numberWithUnsignedLong:itemId] setKey:@"id"];
     [request callBack:^(Response* response){
         NSString* message = nil;
         if(response.code == SUCCESS_CODE){
             message = msg;
+            if(callback)
+                callback();
         }else{
             message = response.message;
         }

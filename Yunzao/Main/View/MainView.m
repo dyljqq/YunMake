@@ -11,6 +11,10 @@
 
 #define CELL @"CELL"
 
+@interface MainView () <UIActionSheetDelegate>
+
+@end
+
 @implementation MainView
 
 - (instancetype)initWithFrame:(CGRect)frame{
@@ -44,6 +48,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ItemModel* model = _dataArray[indexPath.row];
+    if(self.block)
+        self.block(model.itemId, model.status);
 }
 
 #pragma Private Method

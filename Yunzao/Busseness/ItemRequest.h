@@ -22,10 +22,10 @@ typedef void (^ItemRequestSuccess)(NSArray* array);
 
 + (void)updateItemRequest:(NSUInteger)itemId withTitle:(NSString*)title withContent:(NSString*)content callback:(ItemRequestComplete)callback;
 
-+ (void)deleteItenRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback;
++ (void)deleteItenRequest:(NSUInteger)itemId callback:(ItemRequestComplete)callback;
 
-+ (void)finishItemRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback;
++ (void)finishItemRequest:(NSUInteger)itemId callback:(ItemRequestComplete)callback;
 
-+ (void)revertItemRequest:(NSUInteger)itemId callback:(ItemRequestSuccess)callback;
++ (void)revertItemRequest:(NSUInteger)itemId callback:(ItemRequestComplete)callback;
 
 @end

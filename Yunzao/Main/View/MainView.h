@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^MainViewBlock)(NSUInteger itemId, BOOL finished);
+
 @interface MainView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong)UITableView* tableView;
 
 @property (nonatomic, copy)NSArray* dataArray;
+
+@property (nonatomic, strong)MainViewBlock block;
 
 @end
