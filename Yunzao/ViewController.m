@@ -104,6 +104,13 @@
 }
 
 - (void)refreshTableView{
+    
+    if(![BaseMethod isConnectionAvailable]){
+        [SVProgressHUD showInfoWithStatus:CONNECT_NETWORK];
+        [mainView.tableView.mj_header endRefreshing];
+        return ;
+    }
+    
     [ItemRequest getItemListRequest:^(NSArray* array){
         [mainView.tableView.mj_header endRefreshing];
         mainView.dataArray = array;
